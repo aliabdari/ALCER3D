@@ -2,11 +2,7 @@ import os
 import pickle
 import torch
 from torch.utils.data import Dataset
-from PIL import Image
 from tqdm import tqdm
-from datasets import load_dataset
-from torchvision.transforms import v2
-import random
 
 
 class DescriptionScene(Dataset):
@@ -28,7 +24,7 @@ class DescriptionScene(Dataset):
                 self.descs = []
                 for idx, s in tqdm(enumerate(self.samples), total=len(self.samples)):
                     self.descs.append(torch.load(self.description_path + os.sep + s + '.pt'))
-                pickle_file = open('available_data/3dfront/descs.pkl', 'wb')
+                pickle_file = open('available_features/3dfront/descs_3dfront.pkl', 'wb')
                 pickle.dump(self.descs, pickle_file)
                 pickle_file.close()
 
@@ -108,3 +104,4 @@ class DescriptionSceneMuseum(Dataset):
             desc_tensor = torch.load(self.description_path + os.sep + self.samples[index] + '.pt')
             scene_img_tensor = torch.load(self.data_pov_path + os.sep + self.samples[index] + '.pt')
         return desc_tensor, scene_img_tensor, index
+
