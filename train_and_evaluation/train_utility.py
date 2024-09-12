@@ -145,8 +145,8 @@ def get_entire_data(dataset='3dfront'):
         scene_path = '../open_clip_features/open_clip_features_museums3k/images'
         desc_path = '../open_clip_features/open_clip_features_museums3k/descriptions/sentences'
     elif dataset == '3dfront':
-        scene_path = '../open_clip_features/open_clip_features_3dfront/images'
-        desc_path = '../../retrieval_including_floorplan_m/open_clip_features/descriptions'
+        scene_path = '../open_clip_features/open_clip_features_3dfront/images_separated'
+        desc_path = '../open_clip_features/open_clip_features_3dfront/descriptions/sentences'
     return desc_path, scene_path
 
 
@@ -329,4 +329,5 @@ def save_results(margins, results, thres=None, file_name=None):
         file.write('\n')
         file.write('*'*100)
         file.write('\n')
+
 
