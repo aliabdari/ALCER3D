@@ -63,20 +63,21 @@ def get_similarity_function(dataset, *args_):
 
 def start_train(args):
     date_result = date.today()
-    if args.simmodel2 is None and args.simmodel3 is None:
-        approach_name = f'{date_result}_{args.simmodel}_{args.dataset}_status{args.status}'
-        similarity_metric = get_similarity_function(args.dataset, args.simmodel)
-    elif args.simmodel2 is not None and args.simmodel3 is None:
-        approach_name = f'{date_result}_{args.simmodel}_{args.simmodel2}_{args.dataset}_status{args.status}'
-        similarity_metric = get_similarity_function(args.dataset, args.simmodel, args.simmodel2)
-    else:
-        approach_name = f'{date_result}_{args.simmodel}_{args.simmodel2}_{args.simmodel3}_{args.dataset}_status{args.status}'
-        similarity_metric = get_similarity_function(args.dataset, args.simmodel, args.simmodel2, args.simmodel3)
-
-    output_feature_size = 256
-
-    relevance_info = similarity_metric
     is_customized_margin = True if args.custom_margin else False
+    if is_customized_margin:
+        if args.simmodel2 is None and args.simmodel3 is None:
+            approach_name = f'{date_result}_{args.simmodel}_{args.dataset}_status{args.status}'
+            similarity_metric = get_similarity_function(args.dataset, args.simmodel)
+        elif args.simmodel2 is not None and args.simmodel3 is None:
+            approach_name = f'{date_result}_{args.simmodel}_{args.simmodel2}_{args.dataset}_status{args.status}'
+            similarity_metric = get_similarity_function(args.dataset, args.simmodel, args.simmodel2)
+        else:
+            approach_name = f'{date_result}_{args.simmodel}_{args.simmodel2}_{args.simmodel3}_{args.dataset}_status{args.status}'
+            similarity_metric = get_similarity_function(args.dataset, args.simmodel, args.simmodel2, args.simmodel3)
+        relevance_info = similarity_metric
+    else:
+        approach_name = f'{date_result}_without_custom_margin'
+    output_feature_size = 256
 
     if is_customized_margin:
         margins = args.margins
@@ -102,7 +103,7 @@ def start_train(args):
                     status=args.status, thres=thresholds, selected_dataset=args.dataset)
     else:
         do_training(approach_name=approach_name, is_customized_margin=is_customized_margin,
-                    output_feature_size=output_feature_size, relevance_info=relevance_info,
+                    output_feature_size=output_feature_size, relevance_info=None,
                     status=args.status, selected_dataset=args.dataset)
 
 
